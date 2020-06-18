@@ -8,6 +8,14 @@ export class Authenticator{
             expiresIn: Authenticator.EXPIRES_IN,
         });
     };
+
+    public getData (token: string): AuthenticatorData {
+        const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
+        const result = {
+            id: payload.id
+        };
+        return result;
+    };
 }
 
 export interface AuthenticatorData{

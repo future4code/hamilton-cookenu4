@@ -28,7 +28,15 @@ export class User extends BaseDatabase{
     public async getUserByEmail(email:string):Promise<any>{
         const result = await this.getConnection().select("*")
         .from(User.TABLE_NAME).where({email});
+        
+        
+        this.destroyConnection();
+        return result[0];
+    };
 
+    public async getUserById(id:string): Promise<any>{
+        const result = await this.getConnection().select("id", "name", "email")
+        .from(User.TABLE_NAME).where({id});
 
         this.destroyConnection();
         return result[0];

@@ -10,5 +10,6 @@ export enum failureMessage{
     email = "Isto que você escreveu não é um e-mail não",
     getUser = "Tem ninguém com este nome aqui não",
     login = "Pode entrar lá agora não"
+    
 
 };

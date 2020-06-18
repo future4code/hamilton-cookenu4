@@ -7,6 +7,8 @@ import {IdGenerator} from "./services/IdGenerator";
 import {HashManager} from "./services/HashManager";
 import {User} from "./entities/User";
 import{sucessMessage, failureMessage} from "./messages";
+import { read } from "fs";
+
 
 dotenv.config();
 const app = express();
@@ -15,7 +17,7 @@ app.use(express.json());
 const server = app.listen(process.env.PORT || 3000, ()=>{
     if(server){
         const address = server.address() as AddressInfo;
-        console.log(`Server is running in http://localhos:${address.port}`);
+        console.log(`Server is running in http://localhost:${address.port}`);
     }else{
         console.error(`Failure upon starting server.`);
     };
@@ -47,8 +49,6 @@ function main(){
         };
     });
 
-
-
     app.post("/login", async (req: Request, res: Response)=>{
         try{
             const userData = await new User().getUserByEmail(req.body.email);
@@ -76,25 +76,45 @@ function main(){
                 message:error.message
             });
         };
+    })
 
+    app.get("/user/profile", async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.auth as string;
+            const getData = new Authenticator().getData(token);
 
+        const getUser = await new User().getUserById(getData.id);
+        
+        res.status(200).send(getUser);                                
+        } catch(err){
+        res.status(400).send({
+            message: err.message,
+        });
+        };
+    });
 
+    app.get("/user/:id", async (req: Request, res: Response) => {
+        try{
+            const token = req.headers.auth as string;
+            const id = req.params.id as string;
 
+            const getAuthorization = new Authenticator().getData(token);
+
+            const getUser = await new User().getUserById(id);
+
+            if (!getUser) {
+                throw new Error ("Tem essa pessoa aqui não");
+            }
+
+            res.status(200).send(getUser)
+            
+        } catch(err) {
+            res.status(400).send({
+                message: err.message,
+            })
+        }
     })
 
 
-
-
-
-
-    // async function teste(){
-    //     const testeLogin = await new User().getUserByEmail("chesperito5@sbt.com");
-
-    //     console.log(testeLogin);
-    // }
-
-    // teste();
-};
-
+}
 main();
-
