@@ -64,11 +64,11 @@ function main(){
             if(autorization){
                 const id = userData.id;
                 const token = new Authenticator().generateToken({id});
-                console.log("logado com sucesso ");
+                console.log(sucessMessage.login);
                 res.status(200).send(token);
 
             }else{
-                throw new Error("deu bosta");
+                throw new Error(failureMessage.login);
             };
 
         }catch (error){
