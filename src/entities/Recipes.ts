@@ -4,6 +4,7 @@ import {failureMessage} from "../messages";
 export class Recipe extends BaseDatabase {
     
     private static TABLE_NAME: string = "Cookenu4_Recipes";
+  //  private static TABLE_NAME2: string = "Cookenu4_Users";
 
     public async createRecipe(
         id: string, title: string, description: string, 
@@ -18,5 +19,14 @@ export class Recipe extends BaseDatabase {
         }).into(Recipe.TABLE_NAME);
 
         this.destroyConnection();
+
     };
+
+    // public async getAuthorId(authorId: string): Promise<any>{
+    //     const result = await this.getConnection().select("id")
+    //     .from(Recipe.TABLE_NAME2).where({authorId})
+
+    //     this.destroyConnection();
+    //     return result[0][0];
+    // }
 } 

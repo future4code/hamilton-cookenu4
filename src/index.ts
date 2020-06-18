@@ -7,7 +7,9 @@ import {IdGenerator} from "./services/IdGenerator";
 import {HashManager} from "./services/HashManager";
 import {User} from "./entities/User";
 import{sucessMessage, failureMessage} from "./messages";
-import { read } from "fs";
+import { Recipe } from "./entities/Recipes";
+import  moment  from "moment"
+import { title } from "process";
 
 
 dotenv.config();
@@ -108,6 +110,32 @@ function main(){
 
             res.status(200).send(getUser)
             
+        } catch(err) {
+            res.status(400).send({
+                message: err.message,
+            })
+        }
+    })
+
+    app.post("/recipe", async (req: Request, res: Response) => {
+        try {
+
+            const token = req.headers.auth as string;
+            const authenticator = new Authenticator;
+            const authorId = authenticator.getData(token);
+            const id = new IdGenerator().generate();
+          
+            const createAt = moment().format("DD/MM/YYYY")
+            const {title, description} = req.body
+            const newRecipe = await new Recipe().createRecipe(
+                id,
+                title,
+                description,
+                createAt,
+                authorId.id
+            );
+                res.status(200).send({title, description})
+
         } catch(err) {
             res.status(400).send({
                 message: err.message,
