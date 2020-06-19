@@ -1,19 +1,21 @@
 import { BaseDatabase } from "../data/BaseDatabase";
 import {failureMessage} from "../messages";
+import  moment  from "moment"
 
 export class Recipe extends BaseDatabase {
     
     private static TABLE_NAME: string = "Cookenu4_Recipes";
-  //  private static TABLE_NAME2: string = "Cookenu4_Users";
 
     public async createRecipe(
         id: string, title: string, description: string, 
-        createAt: string, author_id: string      
+         author_id: string      
     ): Promise <void> {
         if (title.length<3){
             throw new Error(failureMessage.name);
         };
         
+        const createAt = moment().format("DD/MM/YYYY");
+
         await this.getConnection().insert({
             id, title, description, createAt, author_id
         }).into(Recipe.TABLE_NAME);
@@ -22,11 +24,12 @@ export class Recipe extends BaseDatabase {
 
     };
 
-    // public async getAuthorId(authorId: string): Promise<any>{
-    //     const result = await this.getConnection().select("id")
-    //     .from(Recipe.TABLE_NAME2).where({authorId})
+    public async getRecipeById(id: string): Promise<any> {
+        const result = await this.getConnection().select("*")
+        .from(Recipe.TABLE_NAME).where({id});
 
-    //     this.destroyConnection();
-    //     return result[0][0];
-    // }
-} 
+        this.destroyConnection();
+        return result[0];
+        
+    }; 
+};

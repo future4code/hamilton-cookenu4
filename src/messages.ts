@@ -1,7 +1,8 @@
 
 export enum sucessMessage{
     createUser = "Prontinho, pode entrar!",
-    login = "Pode ir lá"
+    login = "Pode ir lá",
+    recipe = "Receita criada com sucesso!"
 };
 
 export enum failureMessage{

@@ -8,8 +8,7 @@ import {HashManager} from "./services/HashManager";
 import {User} from "./entities/User";
 import{sucessMessage, failureMessage} from "./messages";
 import { Recipe } from "./entities/Recipes";
-import  moment  from "moment"
-import { title } from "process";
+
 
 
 dotenv.config();
@@ -121,28 +120,48 @@ function main(){
         try {
 
             const token = req.headers.auth as string;
-            const authenticator = new Authenticator;
+            const authenticator = new Authenticator();
             const authorId = authenticator.getData(token);
             const id = new IdGenerator().generate();
           
-            const createAt = moment().format("DD/MM/YYYY")
-            const {title, description} = req.body
+            const {title, description} = req.body;
             const newRecipe = await new Recipe().createRecipe(
                 id,
                 title,
                 description,
-                createAt,
                 authorId.id
             );
-                res.status(200).send({title, description})
+            res.status(200).send(sucessMessage.recipe);
 
         } catch(err) {
             res.status(400).send({
+                message: err.message,
+            });
+        };
+    });
+
+    app.get("/recipe/:id", async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.auth as string;
+            const id = req.params.id as string;
+
+            const getAuthorization = new Authenticator().getData(token);
+
+            const getRecipe = await new Recipe().getRecipeById(id);7
+
+            if(!getRecipe) {
+                throw new Error ("Não tem essa receita no livro")
+            }
+
+            res.status(200).send(getRecipe)
+        } catch(err) {
+            res.status(400).send ({
                 message: err.message,
             })
         }
     })
 
 
-}
+
+};
 main();
