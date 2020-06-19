@@ -1,6 +1,5 @@
 import knex from "knex";
 
-
 export abstract class BaseDatabase{
 
     private static connection: knex | null = null;

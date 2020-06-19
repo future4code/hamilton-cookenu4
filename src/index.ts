@@ -8,6 +8,8 @@ import {HashManager} from "./services/HashManager";
 import {User} from "./entities/User";
 import{sucessMessage, failureMessage} from "./messages";
 import { Recipe } from "./entities/Recipes";
+import { Followers } from "./entities/Followers";
+import { Feed } from "./entities/Feed";
 
 
 
@@ -161,6 +163,63 @@ function main(){
         }
     })
 
+    app.post("/user/follow", async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.auth as string;
+            const followedId = req.body.followedId as string;
+
+            const authenticateUser = new Authenticator().getData(token)
+
+            if (followedId === authenticateUser.id) {
+                throw new Error (failureMessage.follow)
+            };
+
+            const followUser = await new Followers().followUser(
+                authenticateUser.id, followedId
+                );
+            
+
+            res.status(200).send(sucessMessage.follow)
+        } catch(err) {
+            res.status(400).send({
+                message: err.message
+            });
+        };
+    });
+
+    app.post("/user/unfollow", async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.auth as string;
+            const followedId = req.body.followedId as string;
+
+            const authenticateUser = new Authenticator().getData(token);
+
+            const unfollowUser = await new Followers().unfollowUser(
+                authenticateUser.id, followedId
+            );
+
+            res.status(200).send(sucessMessage.unfollow) //tentar impedir de seguir repetido
+        } catch(err) {
+            res.status(400).send({
+                message: err.message
+            });
+        };
+    });
+
+    app.post("/user/feed", async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.auth as string;
+            const authenticateUser = new Authenticator().getData(token);
+
+            const feed = await new Feed().getFeed(authenticateUser.id);
+
+            res.status(200).send(feed)
+            } catch(err) {
+                res.status(400).send({
+                    message: err.message
+                })
+            }
+    })
 
 
 };
