@@ -160,8 +160,8 @@ function main(){
             res.status(400).send ({
                 message: err.message,
             })
-        }
-    })
+        };
+    });
 
     app.post("/user/follow", async (req: Request, res: Response) => {
         try {
@@ -218,8 +218,8 @@ function main(){
                 res.status(400).send({
                     message: err.message
                 })
-            }
-    })
+            };
+    });
 
 
 };
