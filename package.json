@@ -1,0 +1,40 @@
+{
+  "name": "hamilton-cookenu4",
+  "version": "1.0.0",
+  "description": "semana18-projeto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node-dev ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/future4code/hamilton-cookenu4.git"
+  },
+  "author": "João Pedro && Ricardo Araujo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/future4code/hamilton-cookenu4/issues"
+  },
+  "homepage": "https://github.com/future4code/hamilton-cookenu4#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "moment": "^2.27.0",
+    "mysql": "^2.18.1",
+    "typescript": "^3.9.5",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/knex": "^0.16.1",
+    "@types/node": "^14.0.13",
+    "@types/uuid": "^8.0.0",
+    "ts-node-dev": "^1.0.0-pre.49"
+  }
+}
